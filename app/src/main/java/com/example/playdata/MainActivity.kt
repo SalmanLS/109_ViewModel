@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterial3Api::class)
+
 package com.example.playdata
 
 import android.os.Bundle
@@ -96,11 +98,12 @@ fun TampilLayout(modifier: Modifier = Modifier) {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
+    var textAlmt by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataForm: DataForm
@@ -118,6 +121,16 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         }
     )
     OutlinedTextField(
+        value = textAlmt,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat") },
+        onValueChange = {
+            textAlmt = it
+        }
+    )
+    OutlinedTextField(
         value = textTlp,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -128,12 +141,13 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textTlp = it
         }
     )
+
     SelectJk(
         options = jenis.map { id -> context.resources.getString(id) },
         onSelectedChanged = { cobaViewModel.setJenisK(it) })
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { cobaViewModel.insertData(textNama, textTlp, dataForm.sex) }
+        onClick = { cobaViewModel.insertData(textNama, textAlmt,textTlp, dataForm.sex) }
     ) {
         Text(
             text = stringResource(R.string.submit),
@@ -143,6 +157,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     Spacer(modifier = Modifier.height(100.dp))
     TextHasil(
         namanya = cobaViewModel.namaUsr,
+        alamatnya = cobaViewModel.alamatUsr,
         telponnya = cobaViewModel.noTlp,
         jenisnya = cobaViewModel.jenisKl
     )
@@ -177,7 +192,7 @@ fun SelectJk(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
 }
 
 @Composable
-fun TextHasil(namanya: String, telponnya: String, jenisnya: String) {
+fun TextHasil(namanya: String, alamatnya: String, telponnya: String, jenisnya: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -186,6 +201,10 @@ fun TextHasil(namanya: String, telponnya: String, jenisnya: String) {
     ) {
         Text(
             text = "Nama : " + namanya,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+        )
+        Text(
+            text = "Alamat : " + alamatnya,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         )
         Text(
