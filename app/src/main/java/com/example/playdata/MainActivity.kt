@@ -7,6 +7,8 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +19,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -133,7 +136,7 @@ fun TampilHeader() {
             text = "Create Your Account",
             fontSize = 25.sp,
             fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(10.dp)
+            modifier = Modifier.padding(5.dp)
         )
 
     }
@@ -224,12 +227,12 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             fontSize = 16.sp
         )
     }
-    Spacer(modifier = Modifier.height(100.dp))
+    Spacer(modifier = Modifier.height(5.dp))
     TextHasil(
-        namanya = cobaViewModel.namaUsr,
+        jenisnya = cobaViewModel.jenisKl,
+        statusnya = cobaViewModel.statuS,
         alamatnya = cobaViewModel.alamatUsr,
-        telponnya = cobaViewModel.noTlp,
-        jenisnya = cobaViewModel.jenisKl
+        emailnya = cobaViewModel.eMail
     )
 
 }
@@ -240,7 +243,7 @@ fun SelectJk(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = "Jenis Kelamin :")
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(6.dp)) {
             options.forEach { item ->
                 Row(
                     modifier = Modifier.selectable(
@@ -272,7 +275,7 @@ fun SelectS(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
 
     Column(modifier = Modifier.fillMaxWidth()) {
         Text(text = "Status :")
-        Row(modifier = Modifier.padding(16.dp)) {
+        Row(modifier = Modifier.padding(6.dp)) {
             options.forEach { item ->
                 Row(
                     modifier = Modifier.selectable(
@@ -299,7 +302,7 @@ fun SelectS(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
 }
 
 @Composable
-fun TextHasil(namanya: String, alamatnya: String, telponnya: String, jenisnya: String) {
+fun TextHasil(jenisnya: String, statusnya: String, alamatnya: String, emailnya: String) {
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -307,19 +310,19 @@ fun TextHasil(namanya: String, alamatnya: String, telponnya: String, jenisnya: S
         modifier = Modifier.fillMaxWidth()
     ) {
         Text(
-            text = "Nama : " + namanya,
+            text = "Jenis Kelamin : " + jenisnya,
+            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
+        )
+        Text(
+            text = "Status : " + statusnya,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
         )
         Text(
             text = "Alamat : " + alamatnya,
-            modifier = Modifier.padding(horizontal = 10.dp, vertical = 4.dp)
-        )
-        Text(
-            text = "Telepon : " + telponnya,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
         Text(
-            text = "Jenis Kelamin : " + jenisnya,
+            text = "Email : " + emailnya,
             modifier = Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
         )
     }

@@ -31,6 +31,8 @@ class CobaViewModel : ViewModel(){
         alamatUsr = almt
         noTlp = tlp
         jenisKl = jk
+        eMail = email
+        statuS = status
     }
 
     fun setJenisK(pilihJk: String){
