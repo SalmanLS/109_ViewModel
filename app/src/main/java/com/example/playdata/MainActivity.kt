@@ -106,26 +106,29 @@ fun TampilLayout(modifier: Modifier = Modifier) {
 
 @Composable
 fun TampilHeader() {
-    Column (horizontalAlignment = Alignment.CenterHorizontally){
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
         ElevatedCard(
             elevation = CardDefaults.cardElevation(
-                defaultElevation = 5.dp
+                defaultElevation = 2.dp
             ),
             modifier = Modifier.fillMaxWidth()
         ) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(12.dp), verticalAlignment = Alignment.CenterVertically
+            ) {
                 Image(
                     painter = painterResource(id = R.drawable.baseline_arrow_back_24),
                     contentDescription = "",
                     modifier = Modifier.size(25.dp)
                 )
-                Spacer(modifier = Modifier.width(110.dp))
+                Spacer(modifier = Modifier.width(100.dp))
                 Text(text = "Register", fontSize = 20.sp, fontWeight = FontWeight.Bold)
             }
 
         }
+        Text(text = "Create Your Account", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
 
     }
 
