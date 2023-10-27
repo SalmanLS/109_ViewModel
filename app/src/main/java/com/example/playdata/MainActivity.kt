@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -38,7 +41,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ModifierInfo
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -82,6 +87,7 @@ fun GreetingPreview() {
     }
 }
 
+
 @Composable
 fun TampilLayout(modifier: Modifier = Modifier) {
     Card(
@@ -98,7 +104,35 @@ fun TampilLayout(modifier: Modifier = Modifier) {
     }
 }
 
+@Composable
+fun TampilHeader() {
+    Column (horizontalAlignment = Alignment.CenterHorizontally){
+        ElevatedCard(
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 5.dp
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                Image(
+                    painter = painterResource(id = R.drawable.baseline_arrow_back_24),
+                    contentDescription = "",
+                    modifier = Modifier.size(25.dp)
+                )
+                Spacer(modifier = Modifier.width(110.dp))
+                Text(text = "Register", fontSize = 20.sp, fontWeight = FontWeight.Bold)
+            }
 
+        }
+
+    }
+
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textNama by remember { mutableStateOf("") }
@@ -109,6 +143,10 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     val dataForm: DataForm
     val uiState by cobaViewModel.uiState.collectAsState()
     dataForm = uiState
+
+    TampilHeader()
+
+
 
     OutlinedTextField(
         value = textNama,
@@ -147,7 +185,7 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         onSelectedChanged = { cobaViewModel.setJenisK(it) })
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { cobaViewModel.insertData(textNama, textAlmt,textTlp, dataForm.sex) }
+        onClick = { cobaViewModel.insertData(textNama, textAlmt, textTlp, dataForm.sex) }
     ) {
         Text(
             text = stringResource(R.string.submit),
