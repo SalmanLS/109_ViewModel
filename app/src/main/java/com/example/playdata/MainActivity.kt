@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.playdata.data.DataForm
 import com.example.playdata.data.DataSource.jenis
+import com.example.playdata.data.DataSource.status
 import com.example.playdata.ui.theme.CobaViewModel
 import com.example.playdata.ui.theme.PlayDataTheme
 
@@ -128,19 +129,24 @@ fun TampilHeader() {
             }
 
         }
-        Text(text = "Create Your Account", fontSize = 25.sp, fontWeight = FontWeight.Bold, modifier = Modifier.padding(10.dp))
+        Text(
+            text = "Create Your Account",
+            fontSize = 25.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.padding(10.dp)
+        )
 
     }
 
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
     var textNama by remember { mutableStateOf("") }
     var textTlp by remember { mutableStateOf("") }
     var textAlmt by remember { mutableStateOf("") }
+    var textEmail by remember { mutableStateOf("") }
 
     val context = LocalContext.current
     val dataForm: DataForm
@@ -162,16 +168,6 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
         }
     )
     OutlinedTextField(
-        value = textAlmt,
-        singleLine = true,
-        shape = MaterialTheme.shapes.large,
-        modifier = Modifier.fillMaxWidth(),
-        label = { Text(text = "Alamat") },
-        onValueChange = {
-            textAlmt = it
-        }
-    )
-    OutlinedTextField(
         value = textTlp,
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -182,13 +178,46 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
             textTlp = it
         }
     )
+    OutlinedTextField(
+        value = textEmail,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Email") },
+        onValueChange = {
+            textEmail = it
+        }
+    )
+
 
     SelectJk(
         options = jenis.map { id -> context.resources.getString(id) },
         onSelectedChanged = { cobaViewModel.setJenisK(it) })
+    SelectS(options = status.map { id -> context.resources.getString(id) },
+        onSelectedChanged = { cobaViewModel.setStatus(it) })
+
+    OutlinedTextField(
+        value = textAlmt,
+        singleLine = true,
+        shape = MaterialTheme.shapes.large,
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = "Alamat") },
+        onValueChange = {
+            textAlmt = it
+        }
+    )
     Button(
         modifier = Modifier.fillMaxWidth(),
-        onClick = { cobaViewModel.insertData(textNama, textAlmt, textTlp, dataForm.sex) }
+        onClick = {
+            cobaViewModel.insertData(
+                textNama,
+                textAlmt,
+                textTlp,
+                dataForm.sex,
+                textEmail,
+                dataForm.status
+            )
+        }
     ) {
         Text(
             text = stringResource(R.string.submit),
@@ -209,27 +238,64 @@ fun TampilForm(cobaViewModel: CobaViewModel = viewModel()) {
 fun SelectJk(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
     var selectedValue by rememberSaveable { mutableStateOf("") }
 
-    Column(modifier = Modifier.padding(16.dp)) {
-        options.forEach { item ->
-            Row(
-                modifier = Modifier.selectable(
-                    selected = selectedValue == item,
-                    onClick = {
-                        selectedValue = item
-                        onSelectedChanged(item)
-                    }),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = selectedValue == item,
-                    onClick = {
-                        selectedValue = item
-                        onSelectedChanged(item)
-                    })
-                Text(item)
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Jenis Kelamin :")
+        Row(modifier = Modifier.padding(16.dp)) {
+            options.forEach { item ->
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectedChanged(item)
+                        }),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectedChanged(item)
+                        })
+                    Text(item)
+                }
             }
         }
     }
+
+
+}
+
+@Composable
+fun SelectS(options: List<String>, onSelectedChanged: (String) -> Unit = {}) {
+    var selectedValue by rememberSaveable { mutableStateOf("") }
+
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(text = "Status :")
+        Row(modifier = Modifier.padding(16.dp)) {
+            options.forEach { item ->
+                Row(
+                    modifier = Modifier.selectable(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectedChanged(item)
+                        }),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    RadioButton(
+                        selected = selectedValue == item,
+                        onClick = {
+                            selectedValue = item
+                            onSelectedChanged(item)
+                        })
+                    Text(item)
+                }
+            }
+        }
+    }
+
+
 }
 
 @Composable
